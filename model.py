@@ -14,6 +14,23 @@ import joblib
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+"""
+
+This script trains text classification models on medical trial descriptions to predict disease categories.
+It performs preprocessing (cleaning, lemmatization, stopword removal), encodes labels, and trains two machine learning
+models: XGBoost and LightGBM. The trained models and TF-IDF vectorizer are saved as .pkl files for future inference.
+
+Steps performed:
+1. Load and preprocess textual data
+2. Apply TF-IDF vectorization
+3. Encode target labels
+4. Train XGBoost and LightGBM classification models
+5. Evaluate models and visualize confusion matrices
+6. Save models and vectorizer for deployment
+
+"""
+
+
 # Load SpaCy model and stopwords
 nlp = spacy.load("en_core_web_sm")
 stop_words = set(stopwords.words('english'))
@@ -24,7 +41,7 @@ df = pd.read_csv("trials.csv")
 # Function to preprocess the text (remove punctuation, tokenize, lemmatize)
 def preprocess(text):
     text = text.lower()
-    text = re.sub(r"\|\|", " ", text)  # remove double pipe used as separator
+    text = re.sub(r"\|\|", " ", text)
     text = re.sub(f"[{re.escape(string.punctuation)}]", "", text)
     text = re.sub(r"\s+", " ", text).strip()
     
@@ -37,7 +54,7 @@ df['clean_description'] = df['description'].apply(preprocess)
 
 # Filter out short descriptions (below 20 words)
 df['desc_length'] = df['clean_description'].apply(lambda x: len(x.split()))
-df = df[df['desc_length'] > 20]  # Remove descriptions that are too short
+df = df[df['desc_length'] > 20] 
 
 # Truncate long descriptions (above 500 words)
 MAX_LENGTH = 500

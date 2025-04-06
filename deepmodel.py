@@ -41,12 +41,12 @@ nlp = spacy.load("en_core_web_sm")
 stop_words = set(stopwords.words('english'))
 
 # Load data
-df = pd.read_csv("trials.csv")  # Replace with the correct file path
+df = pd.read_csv("trials.csv")
 
 # Function to preprocess the text (remove punctuation, tokenize, lemmatize)
 def preprocess(text):
     text = text.lower()
-    text = re.sub(r"\|\|", " ", text)  # remove double pipe used as separator
+    text = re.sub(r"\|\|", " ", text)
     text = re.sub(f"[{re.escape(string.punctuation)}]", "", text)
     text = re.sub(r"\s+", " ", text).strip()
     
@@ -59,7 +59,7 @@ df['clean_description'] = df['description'].apply(preprocess)
 
 # Filter out short descriptions (below 20 words)
 df['desc_length'] = df['clean_description'].apply(lambda x: len(x.split()))
-df = df[df['desc_length'] > 20]  # Remove descriptions that are too short
+df = df[df['desc_length'] > 20] 
 
 # Truncate long descriptions (above 500 words)
 MAX_LENGTH = 500
@@ -96,8 +96,8 @@ model.compile(optimizer='adam',
 history = model.fit(X_train_tfidf, y_train, epochs=10, batch_size=32, validation_data=(X_test_tfidf, y_test))
 
 # Evaluate the model on the test set
-y_pred_probs = model.predict(X_test_tfidf)  # Probabilities for each class
-y_pred = np.argmax(y_pred_probs, axis=1)  # Convert probabilities to class labels (take argmax)
+y_pred_probs = model.predict(X_test_tfidf) 
+y_pred = np.argmax(y_pred_probs, axis=1)
 
 # Print classification metrics
 print("\nMLP Classification Report:\n")
@@ -117,7 +117,7 @@ accuracy = accuracy_score(y_test, y_pred)
 print(f"Accuracy on Test Set: {accuracy:.4f}")
 
 # Precision and Recall
-precision = precision_score(y_test, y_pred, average='weighted')  # Weighted average for imbalanced classes
+precision = precision_score(y_test, y_pred, average='weighted')
 recall = recall_score(y_test, y_pred, average='weighted')
 
 print(f"Precision on Test Set: {precision:.4f}")
