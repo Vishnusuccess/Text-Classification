@@ -1,0 +1,14 @@
+pandas
+scikit-learn
+nltk
+joblib
+spacy
+matplotlib
+seaborn
+xgboost
+lightgbm
+tensorflow-macos # TensorFlow for macOS
+tensorflow-metal # Metal acceleration for macOS
+tf-keras 
+Flask
+flask_restx 
